@@ -1,0 +1,31 @@
+{
+  "name": "write your project name",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tan-yuki/write-your-project-repository.git"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.0.1",
+    "browserify": "^8.1.3",
+    "coffee-script": "^1.9.0",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-rimraf": "^0.1.1",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.3",
+    "path": "^0.11.14",
+    "reactify": "^1.0.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.3.0"
+  },
+  "scripts": {
+    "build": "gulp",
+    "start": "gulp watch"
+  },
+  "dependencies": {
+    "react": "^0.12.2"
+  }
+}

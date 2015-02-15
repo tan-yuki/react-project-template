@@ -1,0 +1,1 @@
+require('./sample/test.js')
