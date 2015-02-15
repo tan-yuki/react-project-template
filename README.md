@@ -1,2 +1,2 @@
-niconico-client
+Template project structure for React app
 ===
