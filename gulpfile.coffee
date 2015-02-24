@@ -1,11 +1,12 @@
 gulp        = require 'gulp'
 gutil       = require 'gulp-util'
-browserify  = require 'browserify'
-reactify    = require 'reactify'
-source      = require 'vinyl-source-stream'
-buffer      = require 'vinyl-buffer'
 uglify      = require 'gulp-uglify'
 sourcemaps  = require 'gulp-sourcemaps'
+notify      = require 'gulp-notify'
+browserify  = require 'browserify'
+babelify    = require 'babelify'
+source      = require 'vinyl-source-stream'
+buffer      = require 'vinyl-buffer'
 watchify    = require 'watchify'
 browserSync = require 'browser-sync'
 del         = require 'del'
@@ -28,16 +29,24 @@ gulp.task 'browserify', ->
   browserify
     entries: [$.main]
     debug: true
-  .transform reactify
+  .transform babelify
+  .require $.main, entry: true
   .bundle()
-    .pipe source 'main.js'
-    .pipe buffer()
-    .pipe sourcemaps.init loadMaps: true
-    .pipe uglify()
-    .pipe sourcemaps.write './'
-    .pipe gulp.dest $.dist
-  .on 'error', ->
-    gutil.log(arguments)
+  .on 'error', (err) ->
+    # see http://qiita.com/tanshio/items/b546b4b3eb2c648cb340
+    args = Array.prototype.slice.call arguments
+    notify
+      .onError
+        title: 'Browsefify Error'
+        message: '<%= error %>'
+      .apply this, args
+    this.emit 'end'
+  .pipe source 'main.js'
+  .pipe buffer()
+  .pipe sourcemaps.init loadMaps: true
+  .pipe uglify()
+  .pipe sourcemaps.write './'
+  .pipe gulp.dest $.dist
 
 gulp.task 'watch', ->
   browserSync.init
@@ -52,3 +61,9 @@ gulp.task 'watch', ->
   ]
 
   gulp.watch [$.output.main, $.html], o, reload
+
+gulp.task 'server', [
+  'clean'
+  'browserify'
+  'watch'
+]
